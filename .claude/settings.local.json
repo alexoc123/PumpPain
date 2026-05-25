@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Copy-Item *)",
+      "PowerShell(Stop-Job *)",
+      "PowerShell(Stop-Process *)",
+      "PowerShell(Get-ChildItem \"C:\\\\Code\\\\PumpPain\" -Recurse | Where-Object { !$_.FullName.Contains\\(\"node_modules\"\\) -and !$_.FullName.Contains\\(\"\\\\dist\\\\\"\\) -and !$_.FullName.Contains\\(\"\\\\data\\\\\"\\) -and !$_.FullName.Contains\\(\"package-lock\"\\) } | Select-Object -ExpandProperty FullName | Sort-Object)"
+    ]
+  }
+}
