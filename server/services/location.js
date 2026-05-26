@@ -25,11 +25,15 @@ async function findNearestStation(lat, lng, radiusMeters = 500) {
       timeout: 15000,
     });
     elements = response.data?.elements || [];
+    console.log(`[overpass] Searched ${lat},${lng} radius ${radiusMeters}m — found ${elements.length} elements`);
   } catch (err) {
     throw new Error(`Overpass API failed: ${err.message}`);
   }
 
-  if (elements.length === 0) return null;
+  if (elements.length === 0) {
+    console.log(`[overpass] No stations found near ${lat},${lng}`);
+    return null;
+  }
 
   // Pick closest element
   const closest = elements
