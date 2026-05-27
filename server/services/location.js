@@ -9,6 +9,10 @@ async function findNearestStation(lat, lng, radiusMeters = 500) {
     (
       node["amenity"="fuel"](around:${radiusMeters},${lat},${lng});
       way["amenity"="fuel"](around:${radiusMeters},${lat},${lng});
+      node["amenity"="service_station"](around:${radiusMeters},${lat},${lng});
+      way["amenity"="service_station"](around:${radiusMeters},${lat},${lng});
+      node["brand"~"Amber|Applegreen|Beechgrove|Burgess|Burmah|Campus|Campus Oil|Carta|Centra|Certa|Certa Fuel|Circle K|Circle K Express|Clarke's|Corrib Oil|Cunniffes|Daly's|Day-Today|Discount Fuels|Donegal Oil|Drive|Elite Oil|Emo|Esso|Esso Express|Estuary|Estuary Fuel|Excol|Glen Fuels|Go|GreatGas|GreatGas Express|Gulf|Independent|Inniskeen Fuels|Inver|LPGain|Mace|Maxoil|Maxol|Morris Oil|Naas Oil|Oil4U|Opt Fuel|O'Sullivan|Pure|Q. Oil|Quigley's|Sheehan's|Shell|Silverstream|Spar|Statoil|Sweeney Oil|Swift|Swift Oil|Tara|Tara Oil|Tesco|Texaco|Tommy Martin Fuels|Top|Topaz|Tria|Xpress Stop",i](around:${radiusMeters},${lat},${lng});
+      way["brand"~"Amber|Applegreen|Beechgrove|Burgess|Burmah|Campus|Campus Oil|Carta|Centra|Certa|Certa Fuel|Circle K|Circle K Express|Clarke's|Corrib Oil|Cunniffes|Daly's|Day-Today|Discount Fuels|Donegal Oil|Drive|Elite Oil|Emo|Esso|Esso Express|Estuary|Estuary Fuel|Excol|Glen Fuels|Go|GreatGas|GreatGas Express|Gulf|Independent|Inniskeen Fuels|Inver|LPGain|Mace|Maxoil|Maxol|Morris Oil|Naas Oil|Oil4U|Opt Fuel|O'Sullivan|Pure|Q. Oil|Quigley's|Sheehan's|Shell|Silverstream|Spar|Statoil|Sweeney Oil|Swift|Swift Oil|Tara|Tara Oil|Tesco|Texaco|Tommy Martin Fuels|Top|Topaz|Tria|Xpress Stop",i](around:${radiusMeters},${lat},${lng});
     );
     out center;
   `;
