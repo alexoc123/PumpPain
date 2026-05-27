@@ -55,7 +55,23 @@ async function findNearestStation(lat, lng, radiusMeters = 500) {
 
   const tags = closest.tags || {};
   const brandName = tags.name || tags.brand || tags.operator || 'Fuel Station';
-  const address = [tags['addr:street'], tags['addr:city']].filter(Boolean).join(', ');
+  let address = [tags['addr:street'], tags['addr:city']].filter(Boolean).join(', ');
+
+  // If no address tags, reverse geocode using Nominatim
+  if (!address) {
+    try {
+      const nominatim = await axios.get('https://nominatim.openstreetmap.org/reverse', {
+        params: { lat: closest.elLat, lon: closest.elLng, format: 'json' },
+        headers: { 'User-Agent': 'PumpPain/1.0 (pumppain.ie)' },
+        timeout: 5000,
+      });
+      const addr = nominatim.data?.address || {};
+      address = [addr.road, addr.suburb || addr.town || addr.city].filter(Boolean).join(', ');
+    } catch {
+      // Nominatim failed — just use brand name alone
+    }
+  }
+
   const name = address ? `${brandName} — ${address}` : brandName;
   const osm_id = `${closest.type}/${closest.id}`;
 
