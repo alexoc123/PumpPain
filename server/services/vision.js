@@ -29,10 +29,15 @@ async function extractPricesFromImage(imageUrl, useTwilioAuth = false) {
           },
           {
             type: 'text',
-            text: `You are reading a fuel forecourt price sign or pump display.
+            text: `You are reading a fuel forecourt price sign or pump display in Ireland.
 Extract all visible fuel prices and return ONLY valid JSON in this exact format:
-{"prices": [{"fuel_type": "petrol"|"diesel"|"e85", "price_per_litre": <number in euros>}]}
-If you cannot read any prices clearly, return: {"prices": [], "error": "reason"}
+{"prices": [{"fuel_type": "petrol"|"diesel", "price_per_litre": <number in euros>}]}
+
+Important rules:
+- "Unleaded", "Unleaded 95", "Unleaded 98", "Super Unleaded" and "E10" all mean petrol — label them as "petrol"
+- Only use "diesel" for diesel fuel
+- Do NOT use "e85" — it is not sold in Ireland. If you see something that might be E85, label it as "petrol" instead
+- If you cannot read any prices clearly, return: {"prices": [], "error": "reason"}
 Do not include any other text.`,
           },
         ],
