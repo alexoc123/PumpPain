@@ -4,10 +4,9 @@ const { getLatestPrices, getCheapestNear } = require('../db/database');
 const router = express.Router();
 
 // GET /api/prices - all latest prices for the map
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const prices = getLatestPrices(48);
-    // Group by station, collect fuel types
+    const prices = await getLatestPrices(48);
     const stationMap = {};
     for (const row of prices) {
       if (!stationMap[row.id]) {
@@ -33,7 +32,7 @@ router.get('/', (req, res) => {
 });
 
 // GET /api/prices/nearby?lat=&lng=&fuel=petrol
-router.get('/nearby', (req, res) => {
+router.get('/nearby', async (req, res) => {
   const lat = parseFloat(req.query.lat);
   const lng = parseFloat(req.query.lng);
   const fuel = req.query.fuel || 'petrol';
@@ -44,7 +43,7 @@ router.get('/nearby', (req, res) => {
   }
 
   try {
-    const results = getCheapestNear(lat, lng, fuel, radius, 10);
+    const results = await getCheapestNear(lat, lng, fuel, radius, 10);
     res.json(results);
   } catch (err) {
     console.error(err);

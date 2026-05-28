@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const { initDb } = require('./db/database');
 
 const whatsappRoutes = require('./routes/whatsapp');
 const pricesRoutes = require('./routes/prices');
@@ -26,6 +27,13 @@ if (process.env.NODE_ENV === 'production') {
   app.get('/{*splat}', (req, res) => res.sendFile(path.join(clientDist, 'index.html')));
 }
 
-app.listen(PORT, () => {
-  console.log(`PumpPain server running on port ${PORT}`);
-});
+initDb()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`PumpPain server running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error('Failed to initialise database:', err);
+    process.exit(1);
+  });

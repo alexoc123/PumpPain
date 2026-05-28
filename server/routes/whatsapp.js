@@ -67,7 +67,7 @@ async function processPhotoAndLocation(imageUrl, reporterHash, latitude, longitu
 
   for (const { fuel_type, price_per_litre } of prices) {
     if (price_per_litre > 0.5 && price_per_litre < 5) {
-      insertPrice({
+      await insertPrice({
         station_id: station.station_id,
         fuel_type,
         price: price_per_litre,
@@ -83,10 +83,10 @@ async function processPhotoAndLocation(imageUrl, reporterHash, latitude, longitu
 
   let msg = `✅ Thanks for sending us a picture! We've recorded ${summary} at *${station.name}*.\n\n`;
 
-  if (getTotalPriceCount() < MIN_ENTRIES_FOR_RECOMMENDATIONS) {
+  if (await getTotalPriceCount() < MIN_ENTRIES_FOR_RECOMMENDATIONS) {
     msg += "We don't have enough data to tell you where the cheapest fuel near you is just yet, but we will soon in the future. Keep the pictures coming!";
   } else {
-    const nearby = getCheapestNear(latitude, longitude, prices[0].fuel_type, 10, 3);
+    const nearby = await getCheapestNear(latitude, longitude, prices[0].fuel_type, 10, 3);
     if (nearby.length > 0) {
       msg += `⛽ *Cheapest ${prices[0].fuel_type} nearby:*\n`;
       nearby.slice(0, 3).forEach((r, i) => {
@@ -159,15 +159,15 @@ router.post('/webhook', express.urlencoded({ extended: false }), async (req, res
 
     // No pending photo — user is asking for nearby prices
     try {
-      if (getTotalPriceCount() < MIN_ENTRIES_FOR_RECOMMENDATIONS) {
+      if (await getTotalPriceCount() < MIN_ENTRIES_FOR_RECOMMENDATIONS) {
         return res.send(buildTwiMLResponse(
           "Thank you for getting in touch! We don't have enough data to tell you where the cheapest fuel near you is just yet, but we will soon. " +
           'Help us get there faster by sending a photo of a pump price display!'
         ));
       }
 
-      const petrol = getCheapestNear(latitude, longitude, 'petrol', 10, 3);
-      const diesel = getCheapestNear(latitude, longitude, 'diesel', 10, 3);
+      const petrol = await getCheapestNear(latitude, longitude, 'petrol', 10, 3);
+      const diesel = await getCheapestNear(latitude, longitude, 'diesel', 10, 3);
 
       if (petrol.length === 0 && diesel.length === 0) {
         return res.send(buildTwiMLResponse(

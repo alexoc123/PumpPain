@@ -1,21 +1,20 @@
 CREATE TABLE IF NOT EXISTS stations (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  id SERIAL PRIMARY KEY,
   name TEXT NOT NULL,
-  lat REAL NOT NULL,
-  lng REAL NOT NULL,
+  lat DOUBLE PRECISION NOT NULL,
+  lng DOUBLE PRECISION NOT NULL,
   address TEXT,
   osm_id TEXT UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS prices (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  station_id INTEGER NOT NULL,
+  id SERIAL PRIMARY KEY,
+  station_id INTEGER NOT NULL REFERENCES stations(id),
   fuel_type TEXT NOT NULL CHECK(fuel_type IN ('petrol', 'diesel', 'e85')),
-  price REAL NOT NULL,
-  reported_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  price DOUBLE PRECISION NOT NULL,
+  reported_at TIMESTAMP DEFAULT NOW(),
   image_url TEXT,
-  reporter_hash TEXT,
-  FOREIGN KEY (station_id) REFERENCES stations(id)
+  reporter_hash TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_prices_station ON prices(station_id);

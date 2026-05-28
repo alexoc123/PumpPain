@@ -75,7 +75,7 @@ async function findNearestStation(lat, lng, radiusMeters = 500) {
   const name = address ? `${brandName} — ${address}` : brandName;
   const osm_id = `${closest.type}/${closest.id}`;
 
-  const station_id = upsertStation({
+  const station_id = await upsertStation({
     name,
     lat: closest.elLat,
     lng: closest.elLng,
