@@ -65,7 +65,12 @@ async function processPhotoAndLocation(imageUrl, reporterHash, latitude, longitu
     ));
   }
 
-  for (const { fuel_type, price_per_litre } of prices) {
+  const normalizedPrices = prices.map(({ fuel_type, price_per_litre }) => ({
+    fuel_type,
+    price_per_litre: price_per_litre > 5 && price_per_litre < 500 ? price_per_litre / 100 : price_per_litre,
+  }));
+
+  for (const { fuel_type, price_per_litre } of normalizedPrices) {
     if (price_per_litre > 0.5 && price_per_litre < 5) {
       await insertPrice({
         station_id: station.station_id,
@@ -77,7 +82,7 @@ async function processPhotoAndLocation(imageUrl, reporterHash, latitude, longitu
     }
   }
 
-  const summary = prices
+  const summary = normalizedPrices
     .map((p) => `${p.fuel_type}: €${p.price_per_litre.toFixed(3)}/L`)
     .join(', ');
 
