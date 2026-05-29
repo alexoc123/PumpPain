@@ -66,7 +66,8 @@ async function findNearestStation(lat, lng, radiusMeters = 500) {
         timeout: 5000,
       });
       const addr = nominatim.data?.address || {};
-      address = [addr.road, addr.suburb || addr.town || addr.city].filter(Boolean).join(', ');
+      const area = addr.suburb || addr.neighbourhood || addr.quarter || addr.village || addr.town || addr.city;
+      address = [addr.road, area].filter(Boolean).join(', ');
     } catch {
       // Nominatim failed — just use brand name alone
     }

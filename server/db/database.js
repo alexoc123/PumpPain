@@ -17,7 +17,9 @@ async function upsertStation({ name, lat, lng, address, osm_id }) {
   const result = await pool.query(
     `INSERT INTO stations (name, lat, lng, address, osm_id)
      VALUES ($1, $2, $3, $4, $5)
-     ON CONFLICT (osm_id) DO UPDATE SET name = EXCLUDED.name, address = EXCLUDED.address
+     ON CONFLICT (osm_id) DO UPDATE SET
+       name = CASE WHEN EXCLUDED.address IS NOT NULL AND EXCLUDED.address != '' THEN EXCLUDED.name ELSE stations.name END,
+       address = COALESCE(NULLIF(EXCLUDED.address, ''), stations.address)
      RETURNING id`,
     [name, lat, lng, address, osm_id]
   );
