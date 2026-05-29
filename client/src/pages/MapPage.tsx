@@ -30,10 +30,9 @@ interface Station {
 
 function makePriceIcon(price: number) {
   const color = price < 1.8 ? '#16a34a' : price < 1.95 ? '#d97706' : '#dc2626';
-  const textColor = price < 1.95 && price >= 1.8 ? '#1a1a1a' : 'white';
   return L.divIcon({
     className: '',
-    html: `<div style="background:${color};color:${textColor};padding:3px 8px;border-radius:12px;font-size:12px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,.3)">€${price.toFixed(3)}</div>`,
+    html: `<div style="background:${color};color:#1a1a1a;padding:3px 8px;border-radius:12px;font-size:12px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,.3)">€${price.toFixed(3)}</div>`,
     iconAnchor: [24, 10],
   });
 }
