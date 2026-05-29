@@ -65,10 +65,15 @@ async function processPhotoAndLocation(imageUrl, reporterHash, latitude, longitu
     ));
   }
 
-  const normalizedPrices = prices.map(({ fuel_type, price_per_litre }) => ({
-    fuel_type,
-    price_per_litre: price_per_litre > 5 && price_per_litre < 500 ? price_per_litre / 100 : price_per_litre,
-  }));
+  // Normalize cents→euros, then keep only the cheapest entry per fuel type
+  const cheapestByFuel = {};
+  for (const { fuel_type, price_per_litre } of prices) {
+    const normalized = price_per_litre > 5 && price_per_litre < 500 ? price_per_litre / 100 : price_per_litre;
+    if (!cheapestByFuel[fuel_type] || normalized < cheapestByFuel[fuel_type]) {
+      cheapestByFuel[fuel_type] = normalized;
+    }
+  }
+  const normalizedPrices = Object.entries(cheapestByFuel).map(([fuel_type, price_per_litre]) => ({ fuel_type, price_per_litre }));
 
   for (const { fuel_type, price_per_litre } of normalizedPrices) {
     if (price_per_litre > 0.5 && price_per_litre < 5) {
