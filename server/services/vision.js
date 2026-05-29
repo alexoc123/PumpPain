@@ -36,10 +36,11 @@ Extract all visible fuel prices and return ONLY valid JSON in this exact format:
 Important rules:
 - Prices in Ireland are always between €1.50 and €2.50 per litre. ALWAYS return price_per_litre as euros (e.g. 1.879, not 187.9)
 - If the sign shows a number like 187.9 or 192.8, that is in cents — divide by 100 and return 1.879 or 1.928
-- "Unleaded", "Unleaded 95", "Unleaded 98", "Super Unleaded" and "E10" all mean petrol — label them as "petrol"
-- Only use "diesel" for diesel fuel
-- Do NOT use "e85" — it is not sold in Ireland. If you see something that might be E85, label it as "petrol" instead
-- If a sign shows multiple grades of the same fuel type, return only the most common/cheapest one
+- For petrol: prefer "Unleaded 95" or plain "Unleaded" over premium grades. If you see both a standard (95) and a premium (98 / Super Unleaded) price, return ONLY the standard/cheaper one labelled as "petrol"
+- "Unleaded", "Unleaded 95", "E10" all mean standard petrol — label as "petrol" and prefer these
+- "Unleaded 98", "Super Unleaded", "V-Power", "Ultimate" are premium grades — only include if no standard grade is visible
+- For diesel: if both standard diesel and premium diesel (e.g. "Premium Diesel", "V-Power Diesel") are shown, return ONLY the standard/cheaper one labelled as "diesel"
+- Do NOT use "e85" — it is not sold in Ireland
 - If you cannot read any prices clearly, return: {"prices": [], "error": "reason"}
 Do not include any other text.`,
           },
