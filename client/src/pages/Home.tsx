@@ -54,7 +54,7 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://wa.me/14155238886"
+              href="https://wa.me/14706135568"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold px-8 py-4 rounded-full text-lg transition-colors shadow-md"
@@ -130,7 +130,7 @@ export default function Home() {
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Ready to save on your next fill-up?</h2>
           <p className="text-gray-500 mb-6">Join the community and help everyone pay less at the pump.</p>
           <a
-            href="https://wa.me/14155238886"
+            href="https://wa.me/14706135568"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold px-8 py-4 rounded-full text-lg transition-colors"
