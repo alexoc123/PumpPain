@@ -76,7 +76,7 @@ async function processPhotoAndLocation(imageUrl, reporterHash, latitude, longitu
   const normalizedPrices = Object.entries(cheapestByFuel).map(([fuel_type, price_per_litre]) => ({ fuel_type, price_per_litre }));
 
   for (const { fuel_type, price_per_litre } of normalizedPrices) {
-    if (price_per_litre > 0.5 && price_per_litre < 5) {
+    if (price_per_litre >= 1.40 && price_per_litre <= 2.50) {
       await insertPrice({
         station_id: station.station_id,
         fuel_type,
