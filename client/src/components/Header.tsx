@@ -13,7 +13,7 @@ export default function Header() {
             to="/"
             end
             className={({ isActive }) =>
-              `text-sm font-medium transition-colors ${isActive ? 'text-green-600' : 'text-gray-600 hover:text-gray-900'}`
+              `hidden sm:block text-sm font-medium transition-colors ${isActive ? 'text-green-600' : 'text-gray-600 hover:text-gray-900'}`
             }
           >
             Home
