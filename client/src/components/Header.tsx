@@ -21,7 +21,7 @@ export default function Header() {
           <NavLink
             to="/map"
             className={({ isActive }) =>
-              `text-sm font-medium transition-colors ${isActive ? 'text-green-600' : 'text-gray-600 hover:text-gray-900'}`
+              `text-sm font-medium whitespace-nowrap transition-colors ${isActive ? 'text-green-600' : 'text-gray-600 hover:text-gray-900'}`
             }
           >
             Price Map
