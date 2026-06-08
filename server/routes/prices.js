@@ -6,7 +6,7 @@ const router = express.Router();
 // GET /api/prices - all latest prices for the map
 router.get('/', async (req, res) => {
   try {
-    const prices = await getLatestPrices(48);
+    const prices = await getLatestPrices();
     const stationMap = {};
     for (const row of prices) {
       if (!stationMap[row.id]) {

@@ -35,14 +35,13 @@ async function insertPrice({ station_id, fuel_type, price, image_url, reporter_h
   return result.rows[0].id;
 }
 
-async function getLatestPrices(limitHours = 48) {
+async function getLatestPrices() {
   const result = await pool.query(
     `SELECT DISTINCT ON (s.id, p.fuel_type)
        s.id, s.name, s.lat, s.lng, s.address,
        p.fuel_type, p.price, p.reported_at
      FROM prices p
      JOIN stations s ON s.id = p.station_id
-     WHERE p.reported_at >= NOW() - INTERVAL '${limitHours} hours'
      ORDER BY s.id, p.fuel_type, p.reported_at DESC`
   );
   return result.rows;
