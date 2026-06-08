@@ -32,8 +32,9 @@ function makePriceIcon(price: number) {
   const color = price < 1.8 ? '#16a34a' : price < 1.95 ? '#d97706' : '#dc2626';
   return L.divIcon({
     className: '',
-    html: `<div style="background:${color};color:#1a1a1a;padding:3px 8px;border-radius:12px;font-size:12px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,.3);white-space:nowrap">€${price.toFixed(2)}</div>`,
-    iconAnchor: [24, 10],
+    html: `<div style="background:${color};color:#1a1a1a;padding:3px 8px;border-radius:12px;font-size:12px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,.3);white-space:nowrap;transform:translate(-50%,-50%)">€${price.toFixed(2)}</div>`,
+    iconSize: [0, 0],
+    iconAnchor: [0, 0],
   });
 }
 
