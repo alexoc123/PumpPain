@@ -1,7 +1,28 @@
 const axios = require('axios');
 const { upsertStation } = require('../db/database');
 
-const OVERPASS_URL = 'https://overpass-api.de/api/interpreter';
+const OVERPASS_SERVERS = [
+  'https://overpass-api.de/api/interpreter',
+  'https://overpass.kumi.systems/api/interpreter',
+];
+
+async function queryOverpass(query) {
+  const params = new URLSearchParams({ data: query });
+  const headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Accept': 'application/json',
+    'User-Agent': 'PumpPain/1.0 (pumppain.ie)',
+  };
+  for (const url of OVERPASS_SERVERS) {
+    try {
+      const response = await axios.post(url, params.toString(), { headers, timeout: 15000 });
+      return response.data?.elements || [];
+    } catch (err) {
+      console.warn(`[overpass] ${url} failed: ${err.message} — trying next server`);
+    }
+  }
+  throw new Error('All Overpass servers failed');
+}
 
 async function findNearestStation(lat, lng, radiusMeters = 500) {
   const query = `
@@ -19,16 +40,7 @@ async function findNearestStation(lat, lng, radiusMeters = 500) {
 
   let elements;
   try {
-    const params = new URLSearchParams({ data: query });
-    const response = await axios.post(OVERPASS_URL, params.toString(), {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Accept': 'application/json',
-        'User-Agent': 'PumpPain/1.0 (pumppain.ie)',
-      },
-      timeout: 15000,
-    });
-    elements = response.data?.elements || [];
+    elements = await queryOverpass(query);
     console.log(`[overpass] Searched ${lat},${lng} radius ${radiusMeters}m — found ${elements.length} elements`);
   } catch (err) {
     throw new Error(`Overpass API failed: ${err.message}`);
