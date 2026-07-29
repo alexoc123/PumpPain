@@ -44,8 +44,8 @@ function PriceMarker({ station, fuelType }: { station: Station; fuelType: 'petro
 
   const icon = makePriceIcon(fuel.price);
   const updatedAt = new Date(fuel.reported_at);
-  const minsAgo = Math.round((Date.now() - updatedAt.getTime()) / 60000);
-  const timeLabel = minsAgo < 60 ? `${minsAgo}m ago` : `${Math.round(minsAgo / 60)}h ago`;
+  const daysAgo = Math.floor((Date.now() - updatedAt.getTime()) / 86400000);
+  const timeLabel = daysAgo === 0 ? 'Today' : daysAgo === 1 ? '1 day ago' : `${daysAgo} days ago`;
 
   return (
     <Marker position={[station.lat, station.lng] as LatLngExpression} icon={icon}>
